@@ -37,3 +37,8 @@ your `~/.aws` directory instead, use this:
 
 (actually I'm not 100% on whether that works. you might need to play around with
 the Vagrantfile a bit.)
+
+# Why?
+
+This uses Docker because installing vagrant and the aws-vagrant plugin may not
+be desirable on the system you want to use it from. E.g.: a CI box.
