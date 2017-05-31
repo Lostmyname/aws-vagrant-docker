@@ -1,0 +1,35 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "dummy"
+
+  config.vm.define "my-vagrant-box" do |vm|
+  end
+
+  config.vm.provider :aws do |aws, override|
+
+    # Auth
+    aws.access_key_id = ENV["AWS_ACCESS_KEY_ID"]
+    aws.secret_access_key = ENV["AWS_SECRET_ACCESS_KEY"]
+    aws.session_token = ENV["AWS_SESSION_TOKEN"]
+    aws.keypair_name = ENV["AWS_SSH_KEY_ID"]
+    override.ssh.username = "ec2-user"
+    override.ssh.private_key_path = "/app/ssh/id_rsa"
+
+    # Config
+    aws.region = "eu-west-1"
+    aws.ami = "ami-01ccc867" # Amazon Linux AMI 2017.03.0 (HVM), SSD Volume Type
+    aws.instance_type = "t2.nano"
+    aws.terminate_on_shutdown = true
+
+    aws.tags = {
+      'Name' => name
+    }
+
+    aws.subnet_id = 'subnet-abc123'
+    #aws.ssh_host_attribute = :private_ip_address
+    aws.security_groups = %w[sg-1234 sg-5678]
+
+    override.nfs.functional = false
+  end
+end
+
+# vim: ft=ruby :
